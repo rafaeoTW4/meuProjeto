@@ -2,7 +2,12 @@ const sequelize = require('./database');
 const Produto = require('./models/Produto');
 
 (async () => {
-  await sequelize.sync({ force: false }); // force: true recria as tabelas do zero
-  console.log('Tabelas sincronizadas!');
+  try {
+    await sequelize.sync({ force: false }); // force: true apaga e recria
+    console.log('✅ Tabelas sincronizadas!');
+  } catch (err) {
+    console.error('Erro ao sincronizar:', err);
+  } finally {
+    await sequelize.close();
+  }
 })();
-
